@@ -29,7 +29,7 @@ def gameLoop(canvas, background, clock, fps):
 
 	birdY = background.get_height()//6
 
-	pipeX = background.get_width() - bottomPipe.get_width()
+	pipeX = background.get_width() 
 
 	maxVelocity = 10
 	maxAcceleration = 2.5
@@ -96,9 +96,11 @@ def gameLoop(canvas, background, clock, fps):
 
 		pipeX -= 5
 
+		#TODO: make the second pipe STARTS coming into view as soon as the first pipe STARTS going off screen
+
 		#Reset pipe when it goes offscreen
 		if pipeX + bottomPipe.get_width()< 0:
-			pipeX = background.get_width() - bottomPipe.get_width()
+			pipeX = background.get_width() 
 			offScreen = True
 		else:
 			offScreen = False
