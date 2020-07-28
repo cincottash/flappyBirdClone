@@ -19,9 +19,11 @@ def gameLoop(canvas, background, clock, fps):
 
 	]
 
-	bottomPipe = pygame.image.load("../assets/sprites/pipe-green.png")
-	#topPipe = pygame.image.load("../assets/sprites/pipe-green.png")
-	topPipe = pygame.transform.rotate(bottomPipe, 180)
+	bottomPipe1 = pygame.image.load("../assets/sprites/pipe-green.png")
+	topPipe1 = pygame.transform.rotate(bottomPipe1, 180)
+
+	bottomPipe2 = pygame.image.load("../assets/sprites/pipe-green.png")
+	topPipe2 = pygame.transform.rotate(bottomPipe2, 180)
 
 	imageIndex = 0
 
@@ -29,17 +31,22 @@ def gameLoop(canvas, background, clock, fps):
 
 	birdY = background.get_height()//6
 
-	pipeX = background.get_width() 
+	pipe1X = background.get_width() 
+	pipe2X = 2 * background.get_width()
 
 	maxVelocity = 10
 	maxAcceleration = 2.5
 
 	flapping = False
 
-	offScreen = False
+	offScreen1 = False
+	offScreen2 = False
 
-	bottomPipeOffset = random.randint(50, 200)
-	topPipeOffset = -400
+	bottomPipe1Offset = random.randint(50, 200)
+	topPipe1Offset = random.randint(-400, -250)
+
+	bottomPipe2Offset = random.randint(50, 200)
+	topPipe2Offset = random.randint(-400, -250)	
 
 	while(not done):
 		canvas.blit(background, (0,0))
@@ -94,25 +101,40 @@ def gameLoop(canvas, background, clock, fps):
 		    	
 		canvas.blit(bird, (birdX, birdY))
 
-		pipeX -= 5
+		pipe1X -= 5
+		pipe2X -= 5
 
-		#TODO: make the second pipe STARTS coming into view as soon as the first pipe STARTS going off screen
+		#make the second pipe START coming into view as soon as the first pipe STARTS going off screen
+		#Reset pipe when it goes offscreen
+		if pipe1X + bottomPipe1.get_width() < 0:
+			pipe1X = 2 * background.get_width() - topPipe1.get_width()
+			offScreen1 = True
+		else:
+			offScreen1 = False
+		#Makes the bottomPipe1 longer or shorter
+		if offScreen1:
+			#larger number increases height
+			bottomPipe1Offset = random.randint(50, 200)
+			topPipe1Offset = random.randint(-450, -350)
 
 		#Reset pipe when it goes offscreen
-		if pipeX + bottomPipe.get_width()< 0:
-			pipeX = background.get_width() 
-			offScreen = True
+		if pipe2X + bottomPipe2.get_width() < 0:
+			pipe2X = 2 * background.get_width()- topPipe1.get_width()
+			offScreen2 = True
 		else:
-			offScreen = False
-		#Makes the bottomPipe longer or shorter
-		if offScreen:
+			offScreen2 = False
+		#Makes the bottomPipe1 longer or shorter
+		if offScreen2:
 			#larger number increases height
-			bottomPipeOffset = random.randint(50, 200)
-			topPipeOffset = random.randint(-400, -250)
+			bottomPipe2Offset = random.randint(50, 200)
+			topPipe2Offset = random.randint(-450, -350)
 
 
-		canvas.blit(bottomPipe, (pipeX, background.get_height()//2 + bottomPipeOffset))
-		canvas.blit(topPipe, (pipeX, background.get_height()//2 + topPipeOffset))
+		canvas.blit(bottomPipe1, (pipe1X, background.get_height()//2 + bottomPipe1Offset))
+		canvas.blit(topPipe1, (pipe1X, background.get_height()//2 + topPipe1Offset))
+
+		canvas.blit(bottomPipe2, (pipe2X, background.get_height()//2 + bottomPipe2Offset))
+		canvas.blit(topPipe2, (pipe2X, background.get_height()//2 + topPipe2Offset))
 
 		#Todo: Check for collision with pipes
 
