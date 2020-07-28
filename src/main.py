@@ -123,7 +123,7 @@ def gameLoop(canvas, background, clock, fps):
 			offScreen2 = True
 		else:
 			offScreen2 = False
-		#Makes the bottomPipe1 longer or shorter
+		#Makes the bottomPipe2 longer or shorter
 		if offScreen2:
 			#larger number increases height
 			bottomPipe2Offset = random.randint(50, 200)
@@ -137,6 +137,7 @@ def gameLoop(canvas, background, clock, fps):
 		canvas.blit(topPipe2, (pipe2X, background.get_height()//2 + topPipe2Offset))
 
 		#Todo: Check for collision with pipes
+
 
 		clock.tick(fps)
 		
