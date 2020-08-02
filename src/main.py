@@ -1,9 +1,9 @@
 from setup import * 
 import math
 import random
-
+  
 def gameLoop(canvas, background, clock, fps):
-	gravity = 0.2
+	gravity = 0.15
 
 	velocity = 0
 
@@ -94,9 +94,12 @@ def gameLoop(canvas, background, clock, fps):
 			velocity = 0
 
 		if velocity > 0:
-			bird = pygame.transform.rotate(bird, -45)
+			#rotate between 0 and -45 relative to acceleratation
+			fraction = acceleration/maxAcceleration
+			degrees = fraction * -45
+			bird = pygame.transform.rotate(bird, degrees)
 		else:
-			bird = pygame.transform.rotate(bird, 45)
+			bird = pygame.transform.rotate(bird, 25)
 
 		    	
 		canvas.blit(bird, (birdX, birdY))
@@ -136,7 +139,7 @@ def gameLoop(canvas, background, clock, fps):
 		canvas.blit(bottomPipe2, (pipe2X, background.get_height()//2 + bottomPipe2Offset))
 		canvas.blit(topPipe2, (pipe2X, background.get_height()//2 + topPipe2Offset))
 
-		#Todo: Check for collision with pipes
+		#Todo: Check for collision with pipes  
 
 
 		clock.tick(fps)
