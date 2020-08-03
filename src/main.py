@@ -24,32 +24,26 @@ def gameLoop(canvas, background, clock, fps):
 	minGap = birdImages[0].get_height() * 2
 
 	birdRects = []
-
-
-	bottomPipe1 = pygame.image.load("../assets/sprites/pipe-green.png")
-	topPipe1 = pygame.transform.rotate(bottomPipe1, 180)
-
-	bottomPipe2 = pygame.image.load("../assets/sprites/pipe-green.png")
-	topPipe2 = pygame.transform.rotate(bottomPipe2, 180)
-
-	bottomPipe1Image = bottomPipe1
-	topPipe1Image = topPipe1
-	bottomPipe2Image = bottomPipe2
-	topPipe2Image = topPipe2
-
-	bottomPipe1 = bottomPipe1.get_rect()
-	topPipe1 = topPipe1.get_rect()
-	bottomPipe2 = bottomPipe2.get_rect()
-	topPipe2 = topPipe2.get_rect()
-
-	pipeRectList = []
-	pipeRectList.append(bottomPipe1)
-	pipeRectList.append(topPipe1)
-	pipeRectList.append(bottomPipe2)
-	pipeRectList.append(topPipe2)
-
 	for image in birdImages:
 		birdRects.append(image.get_rect())
+
+	bottomPipe1Image = pygame.image.load("../assets/sprites/pipe-green.png")
+	topPipe1Image = pygame.transform.rotate(bottomPipe1Image, 180)
+
+	bottomPipe2Image = bottomPipe1Image
+	topPipe2Image = topPipe1Image
+
+	bottomPipe1Rect = bottomPipe1Image.get_rect()
+	topPipe1Rect = topPipe1Image.get_rect()
+	bottomPipe2Rect = bottomPipe2Image.get_rect()
+	topPipe2Rect = topPipe2Image.get_rect()
+
+	pipeRectList = []
+
+	pipeRectList.append(bottomPipe1Rect)
+	pipeRectList.append(topPipe1Rect)
+	pipeRectList.append(bottomPipe2Rect)
+	pipeRectList.append(topPipe2Rect)
 
 	imageIndex = 0
 
@@ -81,11 +75,11 @@ def gameLoop(canvas, background, clock, fps):
 		bottomPipe2Offset = random.randint(50, 200)
 		topPipe2Offset = random.randint(-450, -350)	
 
-		totalGap1 = background.get_height() - bottomPipe1.height + bottomPipe1Offset - topPipe1.height - topPipe1Offset
-		totalGap2 = background.get_height() - bottomPipe2.height + bottomPipe2Offset - topPipe2.height - topPipe2Offset
+		totalGap1 = background.get_height() - bottomPipe1Rect.height + bottomPipe1Offset - topPipe1Rect.height - topPipe1Offset
+		totalGap2 = background.get_height() - bottomPipe2Rect.height + bottomPipe2Offset - topPipe2Rect.height - topPipe2Offset
 		# print("totalGap1 : {} \n totalGap2: {}\n".format(totalGap1, totalGap2))
 		
-		if totalGap1 < minGap or totalGap2 < minGap:
+		if totalGap1 < minGap and totalGap2 < minGap:
 			validGap = False
 		else:
 			validGap = True
@@ -129,14 +123,8 @@ def gameLoop(canvas, background, clock, fps):
 
 		#Stop bird from going off the screen
 		if birdY + bird.width > background.get_height():
-			# birdY = background.get_height() - bird.height
-			# acceleration = 0
-			# velocity = 0
 			done = True
 		elif birdY < 0:
-			# birdY = bird.height
-			# acceleration = 0
-			# velocity = 0
 			done = True
 		birdImage = birdImages[imageIndex]
 
@@ -160,8 +148,8 @@ def gameLoop(canvas, background, clock, fps):
 
 		#make the second pipe START coming into view as soon as the first pipe STARTS going off screen
 		#Reset pipe when it goes offscreen
-		if pipe1X + bottomPipe1.width < 0:
-			pipe1X = 2 * background.get_width() - topPipe1.width
+		if pipe1X + bottomPipe1Rect.width < 0:
+			pipe1X = 2 * background.get_width() - topPipe1Rect.width
 			offScreen1 = True
 		else:
 			offScreen1 = False
@@ -178,7 +166,7 @@ def gameLoop(canvas, background, clock, fps):
 				#larger values bring top pipe down
 				topPipe1Offset = random.randint(-450, -350)
 
-				totalGap1 = background.get_height() - bottomPipe1.height + bottomPipe1Offset - topPipe1.height - topPipe1Offset
+				totalGap1 = background.get_height() - bottomPipe1Rect.height + bottomPipe1Offset - topPipe1Rect.height - topPipe1Offset
 				# print("totalGap1 : {} \n totalGap2: {}\n".format(totalGap1, totalGap2))
 				
 				if totalGap1 < minGap :
@@ -190,14 +178,13 @@ def gameLoop(canvas, background, clock, fps):
 
 
 		#Reset pipe when it goes offscreen
-		if pipe2X + bottomPipe2.width < 0:
-			pipe2X = 2 * background.get_width()- topPipe1.width
+		if pipe2X + bottomPipe2Rect.width < 0:
+			pipe2X = 2 * background.get_width()- topPipe1Rect.width
 			offScreen2 = True
 		else:
 			offScreen2 = False
 		#Makes the bottomPipe2 longer or shorter
 		if offScreen2:
-			validGap = False
 			#larger number increases height
 			validGap = False
 			#larger number increases height
@@ -209,7 +196,7 @@ def gameLoop(canvas, background, clock, fps):
 
 				#validGap = True
 
-				totalGap2 = background.get_height() - bottomPipe2.height + bottomPipe2Offset - topPipe2.height - topPipe2Offset
+				totalGap2 = background.get_height() - bottomPipe2Rect.height + bottomPipe2Offset - topPipe2Rect.height - topPipe2Offset
 				# print("totalGap1 : {} \n totalGap2: {}\n".format(totalGap1, totalGap2))
 				
 				if totalGap2 < minGap:
@@ -217,17 +204,17 @@ def gameLoop(canvas, background, clock, fps):
 				else:
 					validGap = True
 
-		bottomPipe1.x = pipe1X
-		bottomPipe1.y = background.get_height()//2 + bottomPipe1Offset
+		bottomPipe1Rect.x = pipe1X
+		bottomPipe1Rect.y = background.get_height()//2 + bottomPipe1Offset
 
-		topPipe1.x = pipe1X
-		topPipe1.y = background.get_height()//2 + topPipe1Offset
+		topPipe1Rect.x = pipe1X
+		topPipe1Rect.y = background.get_height()//2 + topPipe1Offset
 
-		bottomPipe2.x = pipe2X
-		bottomPipe2.y = background.get_height()//2 + bottomPipe2Offset
+		bottomPipe2Rect.x = pipe2X
+		bottomPipe2Rect.y = background.get_height()//2 + bottomPipe2Offset
 
-		topPipe2.x = pipe2X
-		topPipe2.y = background.get_height()//2 + topPipe2Offset
+		topPipe2Rect.x = pipe2X
+		topPipe2Rect.y = background.get_height()//2 + topPipe2Offset
 
 
 		canvas.blit(bottomPipe1Image, (pipe1X, background.get_height()//2 + bottomPipe1Offset))
