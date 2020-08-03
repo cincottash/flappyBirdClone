@@ -9,7 +9,7 @@ def gameLoop(canvas, background, clock, fps):
 
 	acceleration = 0
 
-
+	score = 0
 
 	done = False
 
@@ -54,7 +54,7 @@ def gameLoop(canvas, background, clock, fps):
 	pipe1X = background.get_width() 
 	pipe2X = 2 * background.get_width()
 
-	maxVelocity = 10
+	maxVelocity = 8
 	maxAcceleration = 2.5
 
 	flapping = False
@@ -77,7 +77,6 @@ def gameLoop(canvas, background, clock, fps):
 
 		totalGap1 = background.get_height() - bottomPipe1Rect.height + bottomPipe1Offset - topPipe1Rect.height - topPipe1Offset
 		totalGap2 = background.get_height() - bottomPipe2Rect.height + bottomPipe2Offset - topPipe2Rect.height - topPipe2Offset
-		# print("totalGap1 : {} \n totalGap2: {}\n".format(totalGap1, totalGap2))
 		
 		if totalGap1 < minGap and totalGap2 < minGap:
 			validGap = False
@@ -156,8 +155,6 @@ def gameLoop(canvas, background, clock, fps):
 		#Makes the bottomPipe1 longer or shorter
 		if offScreen1:
 			validGap = False
-			#larger number increases height
-
 			while(not validGap):
 
 				#INcreasing this value makes them smaller
@@ -167,15 +164,11 @@ def gameLoop(canvas, background, clock, fps):
 				topPipe1Offset = random.randint(-450, -350)
 
 				totalGap1 = background.get_height() - bottomPipe1Rect.height + bottomPipe1Offset - topPipe1Rect.height - topPipe1Offset
-				# print("totalGap1 : {} \n totalGap2: {}\n".format(totalGap1, totalGap2))
 				
 				if totalGap1 < minGap :
 					validGap = False
 				else:
 					validGap = True
-
-
-
 
 		#Reset pipe when it goes offscreen
 		if pipe2X + bottomPipe2Rect.width < 0:
@@ -194,10 +187,7 @@ def gameLoop(canvas, background, clock, fps):
 				bottomPipe2Offset = random.randint(50, 200)
 				topPipe2Offset = random.randint(-450, -350)	
 
-				#validGap = True
-
-				totalGap2 = background.get_height() - bottomPipe2Rect.height + bottomPipe2Offset - topPipe2Rect.height - topPipe2Offset
-				# print("totalGap1 : {} \n totalGap2: {}\n".format(totalGap1, totalGap2))
+				totalGap2 = background.get_height() - bottomPipe2Rect.height + bottomPipe2Offset - topPipe2Rect.height - topPipe2Offset				
 				
 				if totalGap2 < minGap:
 					validGap = False
@@ -216,19 +206,16 @@ def gameLoop(canvas, background, clock, fps):
 		topPipe2Rect.x = pipe2X
 		topPipe2Rect.y = background.get_height()//2 + topPipe2Offset
 
+		for pipe in pipeRectList:
+			if pipe.colliderect(birdRects[imageIndex]):
+				done = True
 
+		#TODO: Check for score update
 		canvas.blit(bottomPipe1Image, (pipe1X, background.get_height()//2 + bottomPipe1Offset))
 		canvas.blit(topPipe1Image, (pipe1X, background.get_height()//2 + topPipe1Offset))
 
 		canvas.blit(bottomPipe2Image, (pipe2X, background.get_height()//2 + bottomPipe2Offset))
 		canvas.blit(topPipe2Image, (pipe2X, background.get_height()//2 + topPipe2Offset))
-
-		#Todo: Check for collision with pipes  
-
-		for pipe in pipeRectList:
-			if pipe.colliderect(birdRects[imageIndex]):
-				done = True
-
 
 		clock.tick(fps)
 		
