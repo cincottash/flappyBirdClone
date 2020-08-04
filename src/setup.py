@@ -1,5 +1,5 @@
 import pygame
-
+from globals import *
 def pygameSetup():
 
 	clock = pygame.time.Clock()
@@ -10,7 +10,19 @@ def pygameSetup():
 
 	fps = 30
 
+	birdImages = [
+	
+	pygame.image.load("../assets/sprites/yellowbird-downflap.png"), 
+	pygame.image.load("../assets/sprites/yellowbird-midflap.png"), 
+	pygame.image.load("../assets/sprites/yellowbird-upflap.png")
+
+	]
+
+	birdRects = []
+	for image in birdImages:
+		birdRects.append(image.get_rect())
+
 	pygame.init()
 
 
-	return canvas, background, clock, fps
+	return canvas, background, clock, fps, birdImages, birdRects

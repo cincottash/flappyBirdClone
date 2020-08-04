@@ -2,31 +2,33 @@ from setup import *
 import math
 import random
   
-def gameLoop(canvas, background, clock, fps):
+def gameLoop():
+	canvas, background, clock, fps, birdImages, birdRects = pygameSetup()
+
 	gravity = 0.15
 
 	velocity = 0
 
 	acceleration = 0
 
+	maxVelocity = 8
+
+	maxAcceleration = 2.5
+
 	score = 0
 
 	done = False
 
-	birdImages = [
-	
-	pygame.image.load("../assets/sprites/yellowbird-downflap.png"), 
-	pygame.image.load("../assets/sprites/yellowbird-midflap.png"), 
-	pygame.image.load("../assets/sprites/yellowbird-upflap.png")
+	flapping = False
 
-	]
+	offScreen1 = False
+	
+	offScreen2 = False
+
+	validGap = False
 
 	minGap = birdImages[0].get_height() * 2
-
-	birdRects = []
-	for image in birdImages:
-		birdRects.append(image.get_rect())
-
+	
 	bottomPipe1Image = pygame.image.load("../assets/sprites/pipe-green.png")
 	topPipe1Image = pygame.transform.rotate(bottomPipe1Image, 180)
 
@@ -54,15 +56,6 @@ def gameLoop(canvas, background, clock, fps):
 	pipe1X = background.get_width() 
 	pipe2X = 2 * background.get_width()
 
-	maxVelocity = 8
-	maxAcceleration = 2.5
-
-	flapping = False
-
-	offScreen1 = False
-	offScreen2 = False
-
-	validGap = False
 
 	while(not validGap):
 
@@ -245,10 +238,7 @@ def gameLoop(canvas, background, clock, fps):
 		    	done = True
 
 def main():
-	canvas, background, clock, fps = pygameSetup()
-
-	gameLoop(canvas, background, clock, fps)
-
+	gameLoop()
 
 
 if __name__ == '__main__':
