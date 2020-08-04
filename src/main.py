@@ -22,7 +22,7 @@ def gameLoop():
 	flapping = False
 
 	offScreen1 = False
-	
+
 	offScreen2 = False
 
 	validGap = False
@@ -49,9 +49,10 @@ def gameLoop():
 
 	imageIndex = 0
 
-	birdX = background.get_width()//8
+	for bird in birdRects:
+		bird.x = background.get_width()//8
 
-	birdY = background.get_height()//6
+		bird.y = background.get_height()//6
 
 	pipe1X = background.get_width() 
 	pipe2X = 2 * background.get_width()
@@ -78,6 +79,8 @@ def gameLoop():
 
 
 	while(not done):
+
+		bird = birdRects[imageIndex]
 
 		canvas.blit(background, (0,0))
 
@@ -109,14 +112,13 @@ def gameLoop():
 			else:
 				acceleration = maxAcceleration
 
-		birdY += velocity
-
-		bird = birdRects[imageIndex]
+		for bird in birdRects:
+			bird.y += velocity
 
 		#Stop bird from going off the screen
-		if birdY + bird.width > background.get_height():
+		if bird.y + bird.width > background.get_height():
 			done = True
-		elif birdY < 0:
+		elif bird.y < 0:
 			done = True
 		birdImage = birdImages[imageIndex]
 
@@ -127,13 +129,8 @@ def gameLoop():
 			birdImage = pygame.transform.rotate(birdImage, -45)
 		else:
 			birdImage = pygame.transform.rotate(birdImage, 25)
-
-		for bird in birdRects:
-			bird.x = birdX
-			bird.y = birdY
-
 		    	
-		canvas.blit(birdImage, (birdX, birdY))
+		canvas.blit(birdImage, (bird.x, bird.y))
 
 		pipe1X -= 5
 		pipe2X -= 5
