@@ -1,6 +1,7 @@
 from setup import * 
 import math
 import random
+import os
   
 def gameLoop():
 	canvas, background, clock, fps, birdImages, birdRects = pygameSetup()
@@ -29,6 +30,22 @@ def gameLoop():
 
 	minGap = birdImages[0].get_height() * 2
 	
+
+	numberImages = []
+	# for fileName in os.listdir("../assets/numbers/"):
+	# 	numberImages.append(pygame.image.load("../assets/numbers/{}".format(fileName)))
+	numberImages.append(pygame.image.load("../assets/numbers/0.png"))
+	numberImages.append(pygame.image.load("../assets/numbers/1.png"))
+	numberImages.append(pygame.image.load("../assets/numbers/2.png"))
+	numberImages.append(pygame.image.load("../assets/numbers/3.png"))
+	numberImages.append(pygame.image.load("../assets/numbers/4.png"))
+	numberImages.append(pygame.image.load("../assets/numbers/5.png"))
+	numberImages.append(pygame.image.load("../assets/numbers/6.png"))
+	numberImages.append(pygame.image.load("../assets/numbers/7.png"))
+	numberImages.append(pygame.image.load("../assets/numbers/8.png"))
+	numberImages.append(pygame.image.load("../assets/numbers/9.png"))
+
+
 	bottomPipe1Image = pygame.image.load("../assets/sprites/pipe-green.png")
 	topPipe1Image = pygame.transform.rotate(bottomPipe1Image, 180)
 
@@ -140,6 +157,7 @@ def gameLoop():
 		if pipe1X + bottomPipe1Rect.width < 0:
 			pipe1X = 2 * background.get_width() - topPipe1Rect.width
 			offScreen1 = True
+			score+=1
 		else:
 			offScreen1 = False
 		#Makes the bottomPipe1 longer or shorter
@@ -164,6 +182,8 @@ def gameLoop():
 		if pipe2X + bottomPipe2Rect.width < 0:
 			pipe2X = 2 * background.get_width()- topPipe1Rect.width
 			offScreen2 = True
+			score+=1
+			#print(score)
 		else:
 			offScreen2 = False
 		#Makes the bottomPipe2 longer or shorter
@@ -207,6 +227,14 @@ def gameLoop():
 		canvas.blit(bottomPipe2Image, (pipe2X, background.get_height()//2 + bottomPipe2Offset))
 		canvas.blit(topPipe2Image, (pipe2X, background.get_height()//2 + topPipe2Offset))
 
+		scoreString = str(score)
+		offset = 0
+
+		for digit in scoreString:
+			canvas.blit(numberImages[int(digit)], (background.get_width()//10 + offset, background.get_height()//10))
+			offset += 1.1 * numberImages[int(digit)].get_width()
+
+
 		clock.tick(fps)
 		
 		pygame.display.update()
@@ -218,6 +246,7 @@ def gameLoop():
 			imageIndex = 0
 		else:
 			imageIndex += 1
+		
 	gameOverImage = pygame.image.load("../assets/sprites/gameover.png")
 	
 	
